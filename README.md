@@ -1,6 +1,9 @@
 MapperMDS
 ===
 
+[![Build Status](https://travis-ci.org/chronchi/MapperMDS.jl.svg?branch=master)](https://travis-ci.org/chronchi/MapperMDS.jl)
+
+
 Adaptation from [TDA.jl](https://github.com/wildart/TDA.jl) mapper
 tool. Here the input is a distance matrix and it uses a hierarchical
 clustering. It was inspired by the problems when one only has the
@@ -31,7 +34,7 @@ You can choose the method to evaluate the quality of the clustering.
 The silhouette method is the default. You can choose no method passing
 as argument ```clustselection = noselection```. You can then specify the number
 of clusters to the hierarchical clustering with ```n_clusters = k```.
-The default value is 2. 
+The default value is 2.
 
 Example
 ---
@@ -51,7 +54,7 @@ X_embedding = classical_mds(X, 1)'[:,1]
 
 # call mapper. note we don't have to specify the filter function,
 # as X_embedding is the filtered data already.
-mpr = MapperMDS.mapper(X, X_projected, intervals=5, overlap=0.2)
+mpr = MapperMDS.mapper(X, X_embedding, intervals=5, overlap=0.2)
 
 # plot the corresponding graph
 using Plots
