@@ -27,6 +27,12 @@ a distance matrix (or a dissimilarity matrix).
 The linkage criteria can be given as a parameter to the function ```mapper``` via ```linkage = :criteria```, where criteria is one of
 the options [here](http://juliastats.github.io/Clustering.jl/stable/hclust.html#Hierarchical-Clustering-1).
 
+You can choose the method to evaluate the quality of the clustering.
+The silhouette method is the default. You can choose no method passing
+as argument ```clustselection = noselection```. You can then specify the number
+of clusters to the hierarchical clustering with ```n_clusters = k```.
+The default value is 2. 
+
 Example
 ---
 
