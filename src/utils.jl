@@ -3,6 +3,7 @@ import LinearAlgebra: inv, det, norm
 import MultivariateStats
 import LightGraphs
 import GraphPlot
+using Plots
 
 export plot_graphmpr
 
