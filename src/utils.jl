@@ -1,6 +1,10 @@
-import Statistics: cov, mean
+import Statistics: cov, mean, normalize
 import LinearAlgebra: inv, det, norm
 import MultivariateStats
+import LightGraphs
+import GraphPlot
+
+export plot_graphmpr
 
 """
     circlepoints(r, n)
@@ -46,4 +50,25 @@ function balanced(x::AbstractVector{<:Real}; kwargs...)
     # generate indexes for cover elements
     patches = map(i->findall(e->i[1]<=e<=i[2], x), irngs)
     return patches
+end
+
+"""
+    plot_graphmpr(mpr[; layout=spring_layout])
+Plot the mapper output using the structure mpr given by the function mapper.
+"""
+function plot_graphmpr(mpr; kwargs...)
+    # get the adjacency matrix form the mpr struct
+    A = mpr.adj
+    # turn it into a graph
+    G = LightGraphs.Graph(A)
+    # for each patch calculate its mean
+    means = [mean(mpr.filter[p]) for p in mpr.patches]
+    # normalize the means
+    mns = normalize(means);
+    # define the colors to plot the mapper output
+    C(g::ColorGradient) = RGB[g[z] for z = mns]
+    g = :algae
+    d = C(cgrad(g))
+    # plot the mapper graph
+    GraphPlot.gplot(G, nodelabel=[size(p,1) for p in mpr.patches], nodefillc=d; kwargs...)
 end

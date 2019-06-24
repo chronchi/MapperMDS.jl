@@ -19,22 +19,26 @@ Pkg.add("https://github.com/chronchi/MapperMDS.jl.git")
 
 Usage
 ---
-The usage here is pretty similar to wildart's module.
+The usage here is pretty similar to [wildart's module](https://github.com/wildart/TDA.jl).
 We have to pass a distance matrix and filter values of the
-distance matrix, e.g. MDS using the distance matrix and projecting
+distance matrix, e.g., MDS using the distance matrix and projecting
 to the real line.
 
 The package performs a hierarchical clustering, since it only needs
 a distance matrix (or a dissimilarity matrix).
 
-The linkage criteria can be given as a parameter to the function ```mapper``` via ```linkage = :criteria```, where criteria is one of
-the options [here](http://juliastats.github.io/Clustering.jl/stable/hclust.html#Hierarchical-Clustering-1).
+The linkage criteria can be given as a parameter to the function ```mapper```
+via ```linkage = :criteria```, where criteria is one of the options [here](http://juliastats.github.io/Clustering.jl/stable/hclust.html#Hierarchical-Clustering-1).
 
 You can choose the method to evaluate the quality of the clustering.
-The silhouette method is the default. You can choose no method passing
-as argument ```clustselection = noselection```. You can then specify the number
+The default is no method. You can choose the silhouette
+using ```clustselection = MapperMDS.silhouette```. You can then specify the number
 of clusters to the hierarchical clustering with ```n_clusters = k```.
-The default value is 2.
+The default value is 2. Notice we can use DBScan from the package Clustering. When using DBScan it is important to use the default value of ```clustselection```.
+
+To plot we use the package [GraphPlot](https://github.com/JuliaGraphs/GraphPlot.jl)
+together with [LightGraphs](https://github.com/JuliaGraphs/LightGraphs.jl).
+
 
 Example
 ---
@@ -49,14 +53,13 @@ X = rand(100, 100)
 X -= X'
 X = map(abs, X)
 
-# embedding of the data represented by the distance matrix in ℜ.
-X_embedding = classical_mds(X, 1)'[:,1]
+# embedding of the data represented by the distance matrix in R.
+filter = classical_mds(X, 1)'[:,1]
 
 # call mapper. note we don't have to specify the filter function,
-# as X_embedding is the filtered data already.
-mpr = MapperMDS.mapper(X, X_embedding, intervals=5, overlap=0.2)
+# as filter is the filtered data already.
+mpr = MapperMDS.mapper(X, filter, intervals=5, overlap=0.2)
 
 # plot the corresponding graph
-using Plots
-plot(mpr, c=:viridis)
+plot_graphmpr(mpr)
 ```
